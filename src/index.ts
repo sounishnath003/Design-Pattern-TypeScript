@@ -1,4 +1,4 @@
-import {BaseRecord, InMemoryDatabase} from "./InMemoryDatabase";
+import {createDatabaseUsingSingleton} from "./DesignPattern";
 
 interface Pokemon {
     id: string;
@@ -6,17 +6,12 @@ interface Pokemon {
     defense: number;
 }
 
-// Factory Pattern - Using a Hidden Layer of of Repository Underneath (Abstraction)
-function createDatabase<T extends BaseRecord>(): InMemoryDatabase<T> {
-    return new InMemoryDatabase<T>();
-}
+const PokemonDB = createDatabaseUsingSingleton<Pokemon>();
 
-const PokemonDB = createDatabase<Pokemon>();
-
-PokemonDB.set({
+PokemonDB.instance.set({
     id: 'Bulbous',
     attack: 50,
     defense: 50
 });
 
-console.log(PokemonDB.get('Bulbous'));
+console.log(PokemonDB.instance.get('Bulbous'));

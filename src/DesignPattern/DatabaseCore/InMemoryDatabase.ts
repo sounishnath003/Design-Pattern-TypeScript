@@ -3,7 +3,7 @@ export interface BaseRecord {
     id: string;
 }
 
-interface Database<T extends BaseRecord> {
+export interface Database<T extends BaseRecord> {
     get(id: string): T | undefined
 
     set(payload: T): void
