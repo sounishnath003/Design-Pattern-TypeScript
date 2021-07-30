@@ -1,4 +1,4 @@
-import {createDatabaseUsingSingleton} from "./DesignPattern";
+import {createDatabaseUsingPubSub} from "./DesignPattern";
 
 interface Pokemon {
     id: string;
@@ -6,12 +6,28 @@ interface Pokemon {
     defense: number;
 }
 
-const PokemonDB = createDatabaseUsingSingleton<Pokemon>();
+// Using the PubSub Pattern
+const PokemonDB = createDatabaseUsingPubSub<Pokemon>();
+// Registering an Observer
+const unsubscribe = PokemonDB.instance.onAfterAdd(({value}) => {
+    console.log({pokemon: value})
+})
 
-PokemonDB.instance.set({
-    id: 'Bulbous',
-    attack: 50,
-    defense: 50
-});
+PokemonDB.instance.set({id: 'Bulbous', attack: 50, defense: 50});
 
-console.log(PokemonDB.instance.get('Bulbous'));
+PokemonDB.instance.set({id: 'Pikachu', attack: 92, defense: 43});
+PokemonDB.instance.set({id: 'Pikachu2', attack: 27, defense: 53});
+PokemonDB.instance.set({id: 'Spiking', attack: 100, defense: 62});
+
+unsubscribe();
+
+// Using Factory Pattern and Singleton Pattern
+// const PokemonDB = createDatabaseUsingSingleton<Pokemon>();
+//
+// PokemonDB.instance.set({
+//     id: 'Bulbous',
+//     attack: 50,
+//     defense: 50
+// });
+//
+// console.log(PokemonDB.instance.get('Bulbous'));
