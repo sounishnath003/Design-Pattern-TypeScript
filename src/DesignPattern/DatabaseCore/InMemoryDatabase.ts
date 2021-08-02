@@ -10,7 +10,7 @@ export interface Database<T extends BaseRecord> {
 }
 
 export class InMemoryDatabase<T extends BaseRecord> implements Database<T> {
-    private dbStore: Record<string, T> = {};
+    public dbStore: Record<string, T> = {};
 
     get(id: string): T | undefined {
         return this.dbStore[id];
